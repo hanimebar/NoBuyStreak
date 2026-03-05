@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Logo from "@/components/Logo";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -10,8 +11,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="min-h-screen bg-background text-foreground">
       <nav className="border-b border-border px-4 py-3 flex items-center justify-between">
-        <Link href="/app/dashboard" className="font-retro text-xl text-amber tracking-wider">
-          NOBUY STREAK
+        <Link href="/app/dashboard">
+          <Logo variant="horizontal" size="xs" />
         </Link>
         <div className="flex items-center gap-4 text-xs text-muted">
           <Link href="/app/rules/new" className="hover:text-amber transition">+ RULE</Link>

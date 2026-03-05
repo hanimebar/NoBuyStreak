@@ -15,9 +15,10 @@ const ibmMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NoBuy Streak — Track Your No Buy Journey",
+  title: "No-BS — No Buy Streak",
   description:
-    "Gamified streak tracker for the No Buy movement. Set rules, check in daily, and share your progress.",
+    "No-BS streak tracker for the No Buy movement. Set rules, check in daily, and share your progress.",
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({

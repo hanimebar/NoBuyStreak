@@ -1,12 +1,13 @@
 import Link from "next/link";
 import Leaderboard from "@/components/Leaderboard";
+import Logo from "@/components/Logo";
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 py-4 border-b border-border">
-        <span className="font-retro text-2xl text-amber tracking-wider">NOBUY STREAK</span>
+        <Logo variant="horizontal" size="sm" />
         <div className="flex items-center gap-4">
           <Link href="/pricing" className="text-sm text-muted hover:text-foreground transition">
             PRICING

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- BG -->
+  <rect width="64" height="64" fill="#0a0a0a"/>
+  <!-- Outer border -->
+  <rect x="2" y="2" width="60" height="60" fill="none" stroke="#f0c040" stroke-width="3"/>
+  <!-- Inner corner ticks -->
+  <line x1="2" y1="12" x2="12" y2="12" stroke="#f0c040" stroke-width="2"/>
+  <line x1="52" y1="12" x2="62" y2="12" stroke="#f0c040" stroke-width="2"/>
+  <line x1="2" y1="52" x2="12" y2="52" stroke="#f0c040" stroke-width="2"/>
+  <line x1="52" y1="52" x2="62" y2="52" stroke="#f0c040" stroke-width="2"/>
+  <!-- NBS text -->
+  <text x="32" y="30" font-family="'Courier New', monospace" font-size="18" font-weight="bold"
+        fill="#f0c040" text-anchor="middle" letter-spacing="2">NBS</text>
+  <!-- Underline / streak bar -->
+  <rect x="10" y="35" width="12" height="5" fill="#f0c040"/>
+  <rect x="24" y="35" width="12" height="5" fill="#f0c040"/>
+  <rect x="38" y="35" width="12" height="5" fill="#39d353"/>
+  <rect x="52" y="35" width="5" height="5" fill="#39d353" opacity="0.4"/>
+  <!-- Tagline -->
+  <text x="32" y="52" font-family="'Courier New', monospace" font-size="7"
+        fill="#555544" text-anchor="middle" letter-spacing="1">NO BUY STREAK</text>
+</svg>

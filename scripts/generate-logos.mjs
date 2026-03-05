@@ -144,7 +144,7 @@ const OG_IMAGE = (w = 1200, h = 630) => {
   <text x="${w/2+60}" y="${h*0.76}" font-family="VT323,monospace" font-size="26" fill="#555544" text-anchor="middle" letter-spacing="2">Track. Resist. Win.</text>
   <!-- bottom bar -->
   <rect x="20" y="${h-52}" width="${w-40}" height="1" fill="#2a2a2a"/>
-  <text x="60" y="${h-22}" font-family="VT323,monospace" font-size="22" fill="#555544" letter-spacing="2">nobuystreak.com</text>
+  <text x="60" y="${h-22}" font-family="VT323,monospace" font-size="22" fill="#555544" letter-spacing="2">nobuystreak.actvli.com</text>
   <text x="${w-60}" y="${h-22}" font-family="VT323,monospace" font-size="22" fill="#555544" text-anchor="end" letter-spacing="2">FREE TO START</text>
   `, w, h);
 };

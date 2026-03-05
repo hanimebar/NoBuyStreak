@@ -106,7 +106,7 @@ export async function GET(
       : []),
     React.createElement("div", {
       style: { fontSize: 14, color: "#555544", marginTop: 20 },
-    }, "NOBUYSTREAK.COM"),
+    }, "NOBUYSTREAK.ACTVLI.COM"),
   );
 
   const svg = await satori(

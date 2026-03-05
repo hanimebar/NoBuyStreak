@@ -11,6 +11,16 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        amber: "var(--amber)",
+        "retro-green": "var(--green)",
+        "retro-red": "var(--red)",
+        border: "var(--border)",
+        card: "var(--card)",
+        muted: "var(--muted)",
+      },
+      fontFamily: {
+        retro: ["var(--font-retro)", "monospace"],
+        mono: ["var(--font-mono)", "Courier New", "monospace"],
       },
     },
   },

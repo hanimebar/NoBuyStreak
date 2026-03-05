@@ -27,15 +27,15 @@ export default function SettingsClient({ profile }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-3">
+      <div className="border border-border bg-card p-5 space-y-3 font-mono text-sm">
         <div>
-          <p className="text-xs text-gray-400">Email</p>
-          <p className="text-sm text-gray-800">{profile?.email}</p>
+          <p className="text-xs text-muted uppercase tracking-wider mb-0.5">Email</p>
+          <p className="text-foreground">{profile?.email}</p>
         </div>
         <div>
-          <p className="text-xs text-gray-400">Plan</p>
-          <p className="text-sm text-gray-800 font-medium">
-            {profile?.is_pro ? "Pro" : "Free"}
+          <p className="text-xs text-muted uppercase tracking-wider mb-0.5">Plan</p>
+          <p className={profile?.is_pro ? "text-amber font-retro text-xl" : "text-foreground"}>
+            {profile?.is_pro ? "PRO" : "FREE"}
           </p>
         </div>
       </div>
@@ -43,26 +43,26 @@ export default function SettingsClient({ profile }: Props) {
       {profile?.is_pro && (
         <button
           onClick={handleBillingPortal}
-          className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
+          className="w-full border border-border text-foreground px-4 py-2.5 text-sm hover:border-amber hover:text-amber transition"
         >
-          Manage subscription
+          MANAGE SUBSCRIPTION
         </button>
       )}
 
       {!profile?.is_pro && (
         <a
           href="/pricing"
-          className="block w-full text-center bg-blue-600 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-blue-700 transition"
+          className="block w-full text-center border border-amber text-amber font-retro text-xl px-4 py-2 hover:bg-amber hover:text-background transition"
         >
-          Upgrade to Pro
+          [UPGRADE TO PRO]
         </a>
       )}
 
       <button
         onClick={handleSignOut}
-        className="w-full border border-red-200 text-red-600 rounded-lg px-4 py-2.5 text-sm hover:bg-red-50 transition"
+        className="w-full border border-retro-red text-retro-red px-4 py-2.5 text-sm hover:bg-retro-red hover:text-background transition"
       >
-        Sign out
+        SIGN OUT
       </button>
     </div>
   );

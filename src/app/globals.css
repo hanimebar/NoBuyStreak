@@ -3,19 +3,39 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #0a0a0a;
+  --foreground: #c8c8b4;
+  --amber: #f0c040;
+  --green: #39d353;
+  --red: #ff5f57;
+  --border: #2a2a2a;
+  --card: #111111;
+  --muted: #555544;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-mono), "Courier New", monospace;
+}
+
+/* Retro display font for headings + streak numbers */
+.font-retro {
+  font-family: var(--font-retro), monospace;
+}
+
+/* Subtle scanline overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.05) 2px,
+    rgba(0, 0, 0, 0.05) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
 }

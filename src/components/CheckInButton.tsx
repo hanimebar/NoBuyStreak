@@ -29,12 +29,12 @@ export default function CheckInButton({ ruleId, checkedToday }: Props) {
 
   if (localState === true) {
     return (
-      <div className="flex items-center gap-2">
-        <span className="text-sm font-medium text-green-600">Held today</span>
+      <div className="flex items-center gap-3">
+        <span className="font-retro text-lg text-retro-green">[HELD]</span>
         <button
           onClick={() => checkIn(false)}
           disabled={loading}
-          className="text-xs text-gray-400 hover:text-red-500 underline"
+          className="text-xs text-muted hover:text-retro-red underline"
         >
           I slipped
         </button>
@@ -44,12 +44,12 @@ export default function CheckInButton({ ruleId, checkedToday }: Props) {
 
   if (localState === false) {
     return (
-      <div className="flex items-center gap-2">
-        <span className="text-sm font-medium text-red-500">Slipped today</span>
+      <div className="flex items-center gap-3">
+        <span className="font-retro text-lg text-retro-red">[SLIPPED]</span>
         <button
           onClick={() => checkIn(true)}
           disabled={loading}
-          className="text-xs text-gray-400 hover:text-green-500 underline"
+          className="text-xs text-muted hover:text-retro-green underline"
         >
           Actually held
         </button>
@@ -62,16 +62,16 @@ export default function CheckInButton({ ruleId, checkedToday }: Props) {
       <button
         onClick={() => checkIn(true)}
         disabled={loading}
-        className="flex-1 bg-green-600 text-white rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-green-700 disabled:opacity-60 transition"
+        className="flex-1 border border-retro-green text-retro-green font-retro text-lg px-3 py-1 hover:bg-retro-green hover:text-background disabled:opacity-40 transition"
       >
-        Held today
+        [HELD TODAY]
       </button>
       <button
         onClick={() => checkIn(false)}
         disabled={loading}
-        className="flex-1 bg-red-100 text-red-600 rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-red-200 disabled:opacity-60 transition"
+        className="flex-1 border border-retro-red text-retro-red font-retro text-lg px-3 py-1 hover:bg-retro-red hover:text-background disabled:opacity-40 transition"
       >
-        I slipped
+        [I SLIPPED]
       </button>
     </div>
   );

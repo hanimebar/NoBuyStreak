@@ -57,46 +57,56 @@ export async function GET(
     return NextResponse.json({ error: "Rule not found" }, { status: 404 });
   }
 
-  // Load a font — fallback to system if not present
+  // Load VT323 font for retro card aesthetic
   let fontData: Buffer;
   try {
     fontData = readFileSync(
-      path.join(process.cwd(), "public", "fonts", "Inter-Bold.ttf")
+      path.join(process.cwd(), "public", "fonts", "VT323-Regular.ttf")
     );
   } catch {
-    // If font not found, satori will use its built-in fallback
     fontData = Buffer.alloc(0);
   }
 
   const savings = moneySaved(rule);
 
+  // Retro IBM terminal card: black bg, amber text, monospace
   const card = React.createElement(
     "div",
     {
       style: {
         width: 600,
         height: 314,
-        background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+        background: "#0a0a0a",
         display: "flex",
         flexDirection: "column" as const,
-        alignItems: "center",
+        alignItems: "flex-start",
         justifyContent: "center",
-        fontFamily: "Inter",
-        color: "#ffffff",
-        borderRadius: 16,
-        padding: 32,
+        fontFamily: "VT323, monospace",
+        color: "#c8c8b4",
+        padding: "40px 48px",
+        border: "2px solid #2a2a2a",
       },
     },
-    React.createElement("div", { style: { fontSize: 14, opacity: 0.7, marginBottom: 8, letterSpacing: 2 } }, "NO BUY STREAK"),
-    React.createElement("div", { style: { fontSize: 18, fontWeight: "bold", marginBottom: 16, opacity: 0.9 } }, rule.name),
-    React.createElement("div", { style: { fontSize: 96, fontWeight: "bold", lineHeight: 1 } }, String(rule.current_streak)),
-    React.createElement("div", { style: { fontSize: 20, opacity: 0.8, marginTop: 8 } }, "days strong"),
+    React.createElement("div", {
+      style: { fontSize: 13, color: "#555544", letterSpacing: 3, marginBottom: 16 },
+    }, "C:\\NOBUY> streak.exe"),
+    React.createElement("div", {
+      style: { fontSize: 22, color: "#c8c8b4", marginBottom: 4 },
+    }, rule.name.toUpperCase()),
+    React.createElement("div", {
+      style: { fontSize: 110, color: "#f0c040", lineHeight: 1, marginBottom: 0 },
+    }, String(rule.current_streak)),
+    React.createElement("div", {
+      style: { fontSize: 28, color: "#c8c8b4", marginTop: 4 },
+    }, "DAYS STRONG"),
     ...(savings
       ? [React.createElement("div", {
-          style: { fontSize: 16, marginTop: 16, background: "rgba(255,255,255,0.1)", padding: "6px 16px", borderRadius: 20 },
-        }, savings)]
+          style: { fontSize: 20, color: "#39d353", marginTop: 12 },
+        }, `> ${savings.toUpperCase()}`)]
       : []),
-    React.createElement("div", { style: { fontSize: 12, opacity: 0.5, marginTop: 24 } }, "nobuystreak.com"),
+    React.createElement("div", {
+      style: { fontSize: 14, color: "#555544", marginTop: 20 },
+    }, "NOBUYSTREAK.COM"),
   );
 
   const svg = await satori(
@@ -105,7 +115,7 @@ export async function GET(
       width: 600,
       height: 314,
       fonts: fontData.length
-        ? [{ name: "Inter", data: fontData, weight: 700, style: "normal" }]
+        ? [{ name: "VT323", data: fontData, weight: 400, style: "normal" }]
         : [],
     }
   );

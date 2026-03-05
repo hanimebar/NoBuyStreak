@@ -88,7 +88,7 @@ export default function LandingPage() {
           </div>
           <div className="flex-1 border-2 border-amber bg-card p-5 text-left">
             <p className="font-retro text-xl text-amber">PRO</p>
-            <p className="font-retro text-4xl text-amber my-2">€6<span className="text-lg text-muted">/mo</span></p>
+            <p className="font-retro text-4xl text-amber my-2">€3<span className="text-lg text-muted">/mo</span></p>
             <ul className="text-sm text-foreground space-y-1 mt-3">
               <li>&gt; Unlimited rules</li>
               <li>&gt; Shareable PNG cards</li>

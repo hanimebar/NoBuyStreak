@@ -56,7 +56,7 @@ export default function PricingPage() {
           {/* Monthly */}
           <div className="border-2 border-amber bg-card p-6">
             <h2 className="font-retro text-2xl text-amber">PRO MONTHLY</h2>
-            <p className="font-retro text-5xl text-amber my-3">€6<span className="text-xl text-muted">/mo</span></p>
+            <p className="font-retro text-5xl text-amber my-3">€3<span className="text-xl text-muted">/mo</span></p>
             <ul className="text-sm text-foreground space-y-2 mb-6">
               <li>&gt; Unlimited rules</li>
               <li>&gt; Daily check-ins</li>
@@ -77,10 +77,10 @@ export default function PricingPage() {
           {/* Annual */}
           <div className="border border-border bg-card p-6 relative">
             <p className="absolute top-3 right-3 text-xs border border-retro-green text-retro-green px-2 py-0.5">
-              SAVE 46%
+              SAVE 17%
             </p>
             <h2 className="font-retro text-2xl text-foreground">PRO ANNUAL</h2>
-            <p className="font-retro text-5xl text-amber my-3">€39<span className="text-xl text-muted">/yr</span></p>
+            <p className="font-retro text-5xl text-amber my-3">€30<span className="text-xl text-muted">/yr</span></p>
             <ul className="text-sm text-foreground space-y-2 mb-6">
               <li>&gt; Unlimited rules</li>
               <li>&gt; Daily check-ins</li>

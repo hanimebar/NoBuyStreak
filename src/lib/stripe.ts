@@ -14,16 +14,16 @@ export function getStripe(): Stripe {
 export const PLANS = {
   monthly: {
     priceId: process.env.STRIPE_MONTHLY_PRICE_ID!,
-    price: 6,
+    price: 3,
     currency: "eur",
     interval: "month" as const,
-    label: "€6/month",
+    label: "€3/month",
   },
   annual: {
     priceId: process.env.STRIPE_ANNUAL_PRICE_ID!,
-    price: 39,
+    price: 30,
     currency: "eur",
     interval: "year" as const,
-    label: "€39/year",
+    label: "€30/year",
   },
 };

@@ -16,7 +16,7 @@ export default function TermsPage() {
         <p>You are responsible for keeping your account credentials secure. We may suspend accounts that violate these terms.</p>
 
         <h2 className="text-base font-semibold text-gray-800 mt-6">Payments</h2>
-        <p>Pro subscriptions are billed monthly (€6) or annually (€39) via Stripe. You can cancel at any time from Settings. No refunds for partial periods.</p>
+        <p>Pro subscriptions are billed monthly (€3) or annually (€30) via Stripe. You can cancel at any time from Settings. No refunds for partial periods.</p>
 
         <h2 className="text-base font-semibold text-gray-800 mt-6">Limitation of liability</h2>
         <p>The service is provided "as is". We are not liable for any damages arising from your use of the service.</p>

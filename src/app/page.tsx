@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Leaderboard from "@/components/Leaderboard";
 
 export default function LandingPage() {
   return (
@@ -68,6 +69,8 @@ export default function LandingPage() {
           ))}
         </div>
       </section>
+
+      <Leaderboard />
 
       {/* Pricing teaser */}
       <section className="border-t border-border py-16 px-6 text-center">

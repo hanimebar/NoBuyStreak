@@ -18,7 +18,11 @@ export const metadata: Metadata = {
   title: "No-BS — No Buy Streak",
   description:
     "No-BS streak tracker for the No Buy movement. Set rules, check in daily, and share your progress.",
-  icons: { icon: "/favicon.svg" },
+  icons: { icon: "/favicon.svg", apple: "/logo-mark-192.png" },
+  openGraph: {
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
+  twitter: { card: "summary_large_image", images: ["/og-image.png"] },
 };
 
 export default function RootLayout({

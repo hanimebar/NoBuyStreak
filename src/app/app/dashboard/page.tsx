@@ -33,6 +33,9 @@ export default async function DashboardPage({
     .single();
 
   const isPro = profile?.is_pro ?? false;
+
+  // New user with no rules → send to onboarding
+  if (!rules || rules.length === 0) redirect("/onboarding");
   const timezone = profile?.timezone ?? "UTC";
   const currency = profile?.currency ?? "EUR";
 

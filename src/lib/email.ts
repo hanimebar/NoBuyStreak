@@ -53,14 +53,15 @@ export async function sendWelcomeEmail(email: string, ruleName: string) {
   await resend.emails.send({
     from: FROM,
     to: email,
-    subject: "Welcome to NoBuy Streak — your streak starts now",
+    subject: "PLAYER 1 HAS ENTERED THE GAME — NoBuy Streak",
     html: retro(`
-      ${line("&gt; WELCOME. YOUR STREAK HAS STARTED.", "#f0c040", "18px")}
-      ${line("You've set up your first No Buy rule:")}
+      ${line("&gt; NEW SAVE FILE CREATED.", "#39d353", "18px")}
+      ${line("No spreadsheet. No sticky notes. No pretending it's a 'lifestyle' now.")}
+      ${line("Your first rule is loaded and ready:")}
       ${line(`&gt; <strong style="color:#f0c040;">${ruleName}</strong>`)}
-      ${line("Check in daily — one tap to mark each day held. The longer your streak, the stronger the habit.")}
-      ${line("Tip: log temptations too. Seeing what almost tripped you up 30 days later is surprisingly powerful.", "#888877")}
-      ${cta("[GO TO DASHBOARD]", `${APP_URL}/app/dashboard`)}
+      ${line("Rules are simple: check in every day. HELD = streak lives. SLIPPED = streak resets. No participation trophies here.", "#888877")}
+      ${line("Pro tip: log temptations too. Future you will enjoy seeing what almost broke you.", "#888877")}
+      ${cta("[START YOUR RUN →]", `${APP_URL}/app/dashboard`)}
     `),
   });
 }
@@ -72,15 +73,15 @@ export async function sendProUpgradeEmail(email: string) {
   await resend.emails.send({
     from: FROM,
     to: email,
-    subject: "You're now Pro — NoBuy Streak",
+    subject: "PRO UNLOCKED. Insert coin was a metaphor — NoBuy Streak",
     html: retro(`
-      ${line("&gt; PRO ACTIVATED.", "#39d353", "18px")}
-      ${line("Your account has been upgraded to NoBuy Streak Pro:")}
-      ${line("&gt; Unlimited rules", "#c8c8b4")}
-      ${line("&gt; Shareable PNG streak cards", "#c8c8b4")}
-      ${line("&gt; 30-day lookback emails", "#c8c8b4")}
-      ${line("Manage your billing anytime from your account settings.", "#888877")}
-      ${cta("[GO TO DASHBOARD]", `${APP_URL}/app/dashboard`)}
+      ${line("&gt; CHEAT CODE ACCEPTED.", "#39d353", "18px")}
+      ${line("Just kidding. You paid for it fair and square. Welcome to Pro:")}
+      ${line("&gt; Unlimited rules — because one bad habit is rarely the only one", "#c8c8b4")}
+      ${line("&gt; Shareable streak cards — for flexing responsibly", "#c8c8b4")}
+      ${line("&gt; 30-day lookback emails — haunted by your past temptations, weekly", "#c8c8b4")}
+      ${line("No BS. No upsells. That's genuinely everything Pro gets you.", "#888877")}
+      ${cta("[LET'S GO →]", `${APP_URL}/app/dashboard`)}
     `),
   });
 }
@@ -92,15 +93,21 @@ export async function sendCancellationEmail(email: string) {
   await resend.emails.send({
     from: FROM,
     to: email,
-    subject: "Your NoBuy Streak Pro subscription has ended",
+    subject: "GAME OVER? Nah. — NoBuy Streak",
     html: retro(`
-      ${line("&gt; SUBSCRIPTION ENDED.", "#f0c040", "18px")}
-      ${line("Your Pro plan has been cancelled. Your account is now on the Free plan:")}
-      ${line("&gt; 1 active rule (oldest kept active)", "#888877")}
-      ${line("&gt; Streak history preserved", "#888877")}
-      ${line("&gt; Card downloads disabled", "#888877")}
-      ${line("Your streak data is safe — nothing has been deleted. Resubscribe anytime.", "#888877")}
-      ${cta("[RESUBSCRIBE]", `${APP_URL}/pricing`)}
+      ${line("&gt; PRO SUBSCRIPTION ENDED.", "#f0c040", "18px")}
+      ${line("Your Pro plan is done. No hard feelings — we respect the no-spend energy.")}
+      ${line("What's still yours on Free:")}
+      ${line("&gt; Your streak history (untouched)", "#888877")}
+      ${line("&gt; 1 active rule", "#888877")}
+      ${line("&gt; Temptation log", "#888877")}
+      ${line("What's gone:")}
+      ${line("&gt; Extra rules (oldest one stays active)", "#555544")}
+      ${line("&gt; Shareable cards", "#555544")}
+      ${line("Come back when the vibe is right. Your data will be here.", "#888877")}
+      ${cta("[CONTINUE ON FREE →]", `${APP_URL}/app/dashboard`)}
+      &nbsp;
+      ${cta("[RESUBSCRIBE →]", `${APP_URL}/pricing`)}
     `),
   });
 }
@@ -113,25 +120,47 @@ export async function sendMilestoneEmail(
   days: number
 ) {
   const resend = getResend();
-  const messages: Record<number, string> = {
-    7:   "One full week. Most people quit by day 3. You didn't.",
-    30:  "30 days. That's a habit now — not just a decision.",
-    100: "100 days strong. This is who you are now.",
-    365: "One full year. Legendary.",
+
+  const flavour: Record<number, { subject: string; headline: string; body: string }> = {
+    7: {
+      subject: `7-DAY STREAK — ${ruleName} (most people don't make it here)`,
+      headline: "&gt; ACHIEVEMENT UNLOCKED: ONE WEEK.",
+      body: "Most people bail by day 3. You're at 7. That's not luck — that's a decision you made every single morning this week.",
+    },
+    30: {
+      subject: `30-DAY STREAK — ${ruleName} 🏆 that's a habit now`,
+      headline: "&gt; 30 DAYS. HIGH SCORE TERRITORY.",
+      body: "Science says 21 days to form a habit. You blew past that. At 30 days, this isn't willpower anymore — it's just who you are now.",
+    },
+    100: {
+      subject: `100-DAY STREAK — ${ruleName} — certified no-buy legend`,
+      headline: "&gt; 100 DAYS. ENTERING LEGEND MODE.",
+      body: "Triple digits. You are statistically an anomaly. Most people who downloaded a habit app are using it as a coaster by now. Not you.",
+    },
+    365: {
+      subject: `365-DAY STREAK — ${ruleName} 🎖️ ONE FULL YEAR`,
+      headline: "&gt; 365 DAYS. ALL SAVE FILES CLEARED.",
+      body: "A full year. We're not going to tell you what to do with this information. You know what it means. Quietly legendary.",
+    },
   };
-  const msg = messages[days] ?? `${days} days and counting.`;
+
+  const f = flavour[days] ?? {
+    subject: `${days}-day streak — ${ruleName}`,
+    headline: `&gt; ${days}-DAY STREAK. STILL GOING.`,
+    body: `${days} days in. The algorithm doesn't know about this. Your credit card company does, and they're upset.`,
+  };
 
   await resend.emails.send({
     from: FROM,
     to: email,
-    subject: `${days}-day streak — ${ruleName} 🔥`,
+    subject: f.subject,
     html: retro(`
-      ${line(`&gt; ${days}-DAY STREAK UNLOCKED.`, "#39d353", "18px")}
+      ${line(f.headline, "#39d353", "18px")}
       ${line(`Rule: <strong style="color:#f0c040;">${ruleName}</strong>`)}
-      ${line(`<span style="font-size:56px;color:#f0c040;line-height:1;">${days}</span>`)}
+      ${line(`<span style="font-size:64px;color:#f0c040;line-height:1;display:block;margin:16px 0;">${days}</span>`)}
       ${line("DAYS STRONG", "#c8c8b4", "16px")}
-      ${line(msg, "#888877")}
-      ${cta("[VIEW YOUR STREAK]", `${APP_URL}/app/dashboard`)}
+      ${line(f.body, "#888877")}
+      ${cta("[VIEW YOUR STREAK →]", `${APP_URL}/app/dashboard`)}
     `),
   });
 }

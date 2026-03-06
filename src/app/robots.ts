@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/app/", "/api/", "/auth/", "/onboarding"],
       },
     ],
-    sitemap: "https://nobuystreak.com/sitemap.xml",
+    sitemap: "https://nobuystreak.actvli.com/sitemap.xml",
   };
 }

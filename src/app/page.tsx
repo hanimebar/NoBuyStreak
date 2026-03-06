@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  alternates: { canonical: "https://nobuystreak.com" },
+  alternates: { canonical: "https://nobuystreak.actvli.com" },
 };
 
 export default async function LandingPage() {
@@ -20,7 +20,7 @@ export default async function LandingPage() {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "NoBuy Streak",
-    url: "https://nobuystreak.com",
+    url: "https://nobuystreak.actvli.com",
     description: "The No Buy streak tracker for the underconsumption movement. Set No Buy rules, check in daily, track money saved, and share your progress.",
     applicationCategory: "LifestyleApplication",
     operatingSystem: "Web, iOS, Android",

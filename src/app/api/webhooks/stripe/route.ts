@@ -3,6 +3,7 @@ export const runtime = "nodejs";
 import { NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
 import { createServiceClient } from "@/lib/supabase/server";
+import { sendProUpgradeEmail, sendCancellationEmail } from "@/lib/email";
 
 export async function POST(request: Request) {
   const body = await request.text();
@@ -47,6 +48,10 @@ export async function POST(request: Request) {
       stripe_customer_id: session.customer,
       stripe_subscription_id: session.subscription,
     }).eq("id", userId);
+
+    // Send upgrade confirmation
+    const { data: prof } = await service.from("profiles").select("email").eq("id", userId).single();
+    if (prof?.email) sendProUpgradeEmail(prof.email).catch(() => {});
   }
 
   if (event.type === "customer.subscription.updated") {
@@ -58,10 +63,16 @@ export async function POST(request: Request) {
 
   if (event.type === "customer.subscription.deleted") {
     const sub = event.data.object as { id: string };
+    const { data: cancelledProf } = await service
+      .from("profiles")
+      .select("email")
+      .eq("stripe_subscription_id", sub.id)
+      .single();
     await service.from("profiles").update({
       is_pro: false,
       stripe_subscription_id: null,
     }).eq("stripe_subscription_id", sub.id);
+    if (cancelledProf?.email) sendCancellationEmail(cancelledProf.email).catch(() => {});
   }
 
   return NextResponse.json({ received: true });

@@ -1,23 +1,40 @@
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import Leaderboard from "@/components/Leaderboard";
 import Logo from "@/components/Logo";
+import { createClient } from "@/lib/supabase/server";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 py-4 border-b border-border">
-        <Logo variant="horizontal" size="sm" />
+        <Link href="/">
+          <Logo variant="horizontal" size="sm" />
+        </Link>
         <div className="flex items-center gap-4">
           <Link href="/pricing" className="text-sm text-muted hover:text-foreground transition">
             PRICING
           </Link>
-          <Link
-            href="/login"
-            className="text-sm border border-amber text-amber px-3 py-1.5 hover:bg-amber hover:text-background transition"
-          >
-            SIGN IN
-          </Link>
+          {user ? (
+            <Link
+              href="/app/dashboard"
+              className="text-sm border border-amber text-amber px-3 py-1.5 hover:bg-amber hover:text-background transition"
+            >
+              MY DASHBOARD
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="text-sm border border-amber text-amber px-3 py-1.5 hover:bg-amber hover:text-background transition"
+            >
+              SIGN IN
+            </Link>
+          )}
         </div>
       </nav>
 

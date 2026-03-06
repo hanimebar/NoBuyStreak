@@ -3,6 +3,7 @@ export const runtime = "nodejs";
 import { NextResponse } from "next/server";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { calculateStreaks, getTodayInTimezone } from "@/lib/streak";
+import { sendMilestoneEmail } from "@/lib/email";
 
 export async function POST(request: Request) {
   const supabase = await createClient();
@@ -21,7 +22,7 @@ export async function POST(request: Request) {
 
   const service = createServiceClient();
 
-  // Fetch user profile for timezone
+  // Fetch user profile for timezone + email
   const { data: profile } = await service
     .from("profiles")
     .select("timezone")
@@ -66,6 +67,19 @@ export async function POST(request: Request) {
 
   if (updateError) {
     return NextResponse.json({ error: updateError.message }, { status: 500 });
+  }
+
+  // Send milestone email (fire-and-forget)
+  const MILESTONES = [7, 30, 100, 365];
+  if (held && MILESTONES.includes(current_streak) && user.email) {
+    const { data: rule } = await service
+      .from("rules")
+      .select("name")
+      .eq("id", rule_id)
+      .single();
+    if (rule) {
+      sendMilestoneEmail(user.email, rule.name, current_streak).catch(() => {});
+    }
   }
 
   return NextResponse.json({ current_streak, longest_streak, checked_date });

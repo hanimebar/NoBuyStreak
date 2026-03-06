@@ -43,6 +43,13 @@ export default function OnboardingPage() {
       return;
     }
 
+    // Fire welcome email (non-blocking)
+    fetch("/api/email/welcome", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rule_name: name }),
+    }).catch(() => {});
+
     window.location.href = "/app/dashboard";
   }
 

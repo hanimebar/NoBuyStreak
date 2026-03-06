@@ -228,7 +228,7 @@ export default function LeaderboardPage() {
                     ? `${e.longest}D`
                     : sort === "savings"
                     ? e.savingsDays != null
-                      ? `${e.savingsDays}`
+                      ? `~${e.savingsDays}`
                       : "—"
                     : `${e.streak}D`;
                 return (

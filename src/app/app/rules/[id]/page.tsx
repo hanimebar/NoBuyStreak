@@ -5,6 +5,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import CheckInButton from "@/components/CheckInButton";
 import type { Checkin, TemptationLog } from "@/types";
+import { formatCurrency } from "@/lib/currencies";
 
 export default async function RuleDetailPage({
   params,
@@ -29,12 +30,13 @@ export default async function RuleDetailPage({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("is_pro, timezone")
+    .select("is_pro, timezone, currency")
     .eq("id", user.id)
     .single();
 
   const isPro = profile?.is_pro ?? false;
   const timezone = profile?.timezone ?? "UTC";
+  const currency = profile?.currency ?? "EUR";
   const today = new Date().toLocaleDateString("en-CA", { timeZone: timezone });
 
   const { data: checkins } = await supabase
@@ -57,7 +59,7 @@ export default async function RuleDetailPage({
 
   const savings =
     rule.daily_spend_estimate && rule.current_streak > 0
-      ? `€${(rule.current_streak * rule.daily_spend_estimate).toFixed(0)}`
+      ? formatCurrency(rule.current_streak * rule.daily_spend_estimate, currency)
       : null;
 
   return (
@@ -161,7 +163,7 @@ export default async function RuleDetailPage({
                 </div>
                 <div className="flex gap-3 mt-0.5 text-xs text-gray-400">
                   <span className="capitalize">{t.category}</span>
-                  {t.estimated_cost && <span>€{t.estimated_cost}</span>}
+                  {t.estimated_cost && <span>{formatCurrency(t.estimated_cost, currency)}</span>}
                   {t.trigger_source && <span>{t.trigger_source}</span>}
                 </div>
               </div>

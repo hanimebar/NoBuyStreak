@@ -11,7 +11,7 @@ export default async function SettingsPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("email, is_pro, stripe_subscription_id, display_name, avatar_url, country, birth_year, lookback_emails")
+    .select("email, is_pro, stripe_subscription_id, display_name, avatar_url, country, birth_year, lookback_emails, currency")
     .eq("id", user.id)
     .single();
 

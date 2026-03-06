@@ -9,7 +9,7 @@ export async function PUT(request: Request) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await request.json();
-  const { display_name, avatar_url, country, birth_year, lookback_emails } = body;
+  const { display_name, avatar_url, country, birth_year, lookback_emails, currency } = body;
 
   const update: Record<string, unknown> = {};
   if (display_name  !== undefined) update.display_name  = display_name || null;
@@ -17,6 +17,7 @@ export async function PUT(request: Request) {
   if (country       !== undefined) update.country       = country      || null;
   if (birth_year    !== undefined) update.birth_year    = birth_year   ? parseInt(birth_year) : null;
   if (lookback_emails !== undefined) update.lookback_emails = Boolean(lookback_emails);
+  if (currency        !== undefined) update.currency        = currency;
 
   const service = createServiceClient();
   const { error } = await service.from("profiles").update(update).eq("id", user.id);

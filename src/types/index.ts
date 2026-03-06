@@ -1,9 +1,15 @@
 export type Category =
   | "clothing"
   | "food"
+  | "drinks"
   | "tech"
   | "beauty"
   | "homewares"
+  | "gaming"
+  | "gambling"
+  | "alcohol"
+  | "smoking"
+  | "trading"
   | "other";
 
 export type TriggerSource =
@@ -23,6 +29,7 @@ export interface Profile {
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
   timezone: string;
+  currency: string;
   created_at: string;
 }
 

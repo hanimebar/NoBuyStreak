@@ -1,17 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Category } from "@/types";
+import { CURRENCIES } from "@/lib/currencies";
 
-const CATEGORIES: Category[] = ["clothing", "food", "tech", "beauty", "homewares", "other"];
+const CATEGORIES: Category[] = [
+  "clothing", "food", "drinks", "tech", "beauty", "homewares",
+  "gaming", "gambling", "alcohol", "smoking", "trading", "other",
+];
 
 export default function NewRulePage() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState<Category>("clothing");
   const [dailySpend, setDailySpend] = useState("");
+  const [currency, setCurrency] = useState("EUR");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.from("profiles").select("currency").single().then(({ data }) => {
+      if (data?.currency) setCurrency(data.currency);
+    });
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -64,6 +76,7 @@ export default function NewRulePage() {
       <h1 className="text-xl font-bold text-gray-900 mb-6">New rule</h1>
 
       <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Rule name</label>
           <input
@@ -93,7 +106,7 @@ export default function NewRulePage() {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Estimated daily spend (€){" "}
+            Est. daily spend ({currency}){" "}
             <span className="text-gray-400 font-normal">— optional</span>
           </label>
           <input
@@ -109,13 +122,22 @@ export default function NewRulePage() {
 
         {error && <p className="text-red-600 text-sm">{error}</p>}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-60 transition"
-        >
-          {loading ? "Saving…" : "Create rule"}
-        </button>
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => window.location.href = "/app/dashboard"}
+            className="flex-1 border border-gray-300 text-gray-600 rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-gray-50 transition"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={loading}
+            className="flex-1 bg-blue-600 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-60 transition"
+          >
+            {loading ? "Saving…" : "Create rule"}
+          </button>
+        </div>
       </form>
     </div>
   );

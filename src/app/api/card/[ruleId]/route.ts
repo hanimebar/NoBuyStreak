@@ -7,14 +7,15 @@ import { Resvg } from "@resvg/resvg-js";
 import { readFileSync } from "fs";
 import path from "path";
 import React from "react";
+import { formatCurrency } from "@/lib/currencies";
 
 function moneySaved(rule: {
   current_streak: number;
   daily_spend_estimate: number | null;
-}): string {
+}, currency: string): string {
   if (!rule.daily_spend_estimate) return "";
   const total = rule.current_streak * rule.daily_spend_estimate;
-  return `€${total.toFixed(0)} saved`;
+  return `${formatCurrency(total, currency)} saved`;
 }
 
 export async function GET(
@@ -35,7 +36,7 @@ export async function GET(
 
   const { data: profile } = await service
     .from("profiles")
-    .select("is_pro")
+    .select("is_pro, currency")
     .eq("id", user.id)
     .single();
 
@@ -67,7 +68,7 @@ export async function GET(
     fontData = Buffer.alloc(0);
   }
 
-  const savings = moneySaved(rule);
+  const savings = moneySaved(rule, profile?.currency ?? "EUR");
 
   // Retro IBM terminal card: black bg, amber text, monospace
   const card = React.createElement(

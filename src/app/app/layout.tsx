@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
+import SignOutButton from "@/components/SignOutButton";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -18,6 +19,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           <Link href="/app/rules/new" className="hover:text-amber transition">+ RULE</Link>
           <Link href="/app/temptations/new" className="hover:text-amber transition">LOG TEMPTATION</Link>
           <Link href="/app/settings" className="hover:text-amber transition">SETTINGS</Link>
+          <SignOutButton />
         </div>
       </nav>
       <main className="max-w-2xl mx-auto px-4 py-8">{children}</main>

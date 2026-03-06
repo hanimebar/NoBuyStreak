@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { CURRENCIES } from "@/lib/currencies";
 
 const COUNTRIES = [
   "Afghanistan","Albania","Algeria","Argentina","Australia","Austria","Belgium","Bolivia",
@@ -24,6 +25,7 @@ interface Profile {
   country: string | null;
   birth_year: number | null;
   lookback_emails: boolean;
+  currency: string;
 }
 
 interface Props {
@@ -118,6 +120,7 @@ export default function SettingsClient({ profile, provider, userId }: Props) {
 
   // Preferences
   const [lookbackEmails, setLookbackEmails] = useState(profile?.lookback_emails ?? true);
+  const [currency, setCurrency] = useState(profile?.currency ?? "EUR");
   const [prefMsg, setPrefMsg] = useState({ text: "", ok: false });
 
   // Danger zone
@@ -194,7 +197,7 @@ export default function SettingsClient({ profile, provider, userId }: Props) {
     const res = await fetch("/api/account/profile", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ lookback_emails: lookbackEmails }),
+      body: JSON.stringify({ lookback_emails: lookbackEmails, currency }),
     });
     setPrefMsg(res.ok ? { text: "Preferences saved", ok: true } : { text: "Save failed", ok: false });
   }
@@ -412,7 +415,19 @@ export default function SettingsClient({ profile, provider, userId }: Props) {
       </Section>
 
       {/* ── PREFERENCES ─────────────────────────────────────────────────── */}
-      <Section title="PREFERENCES" cmd="[emails]">
+      <Section title="PREFERENCES" cmd="[emails + currency]">
+        <Field label="Currency">
+          <select
+            value={currency}
+            onChange={e => setCurrency(e.target.value)}
+            className="w-full bg-background border border-border text-foreground px-3 py-2 text-sm font-mono focus:outline-none focus:border-amber"
+          >
+            {CURRENCIES.map(c => (
+              <option key={c.code} value={c.code}>{c.code} — {c.name}</option>
+            ))}
+          </select>
+        </Field>
+
         <div className="flex items-center justify-between">
           <div>
             <p className="font-mono text-xs text-foreground">30-day lookback emails</p>

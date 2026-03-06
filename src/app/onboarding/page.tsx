@@ -3,13 +3,18 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Category } from "@/types";
+import { CURRENCIES } from "@/lib/currencies";
 
-const CATEGORIES: Category[] = ["clothing", "food", "tech", "beauty", "homewares", "other"];
+const CATEGORIES: Category[] = [
+  "clothing", "food", "drinks", "tech", "beauty", "homewares",
+  "gaming", "gambling", "alcohol", "smoking", "trading", "other",
+];
 
 export default function OnboardingPage() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState<Category>("clothing");
   const [dailySpend, setDailySpend] = useState("");
+  const [currency, setCurrency] = useState("EUR");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -23,7 +28,7 @@ export default function OnboardingPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { window.location.href = "/login"; return; }
 
-    await supabase.from("profiles").update({ timezone }).eq("id", user.id);
+    await supabase.from("profiles").update({ timezone, currency }).eq("id", user.id);
 
     const { error: ruleError } = await supabase.from("rules").insert({
       user_id: user.id,
@@ -77,8 +82,21 @@ export default function OnboardingPage() {
           </div>
 
           <div>
+            <label className="block text-xs text-muted mb-1 uppercase tracking-wider">Currency</label>
+            <select
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+              className="w-full bg-background border border-border text-foreground px-3 py-2 text-sm font-mono focus:outline-none focus:border-amber"
+            >
+              {CURRENCIES.map((c) => (
+                <option key={c.code} value={c.code}>{c.code} — {c.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
             <label className="block text-xs text-muted mb-1 uppercase tracking-wider">
-              Est. daily spend (€) — optional
+              Est. daily spend ({currency}) — optional
             </label>
             <input
               type="number"

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import CheckInButton from "@/components/CheckInButton";
 import type { Rule } from "@/types";
+import { formatCurrency } from "@/lib/currencies";
 
 export default async function DashboardPage({
   searchParams,
@@ -27,12 +28,13 @@ export default async function DashboardPage({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("is_pro, timezone")
+    .select("is_pro, timezone, currency")
     .eq("id", user.id)
     .single();
 
   const isPro = profile?.is_pro ?? false;
   const timezone = profile?.timezone ?? "UTC";
+  const currency = profile?.currency ?? "EUR";
 
   const today = new Date().toLocaleDateString("en-CA", { timeZone: timezone });
   const ruleIds = (rules ?? []).map((r: Rule) => r.id);
@@ -86,7 +88,7 @@ export default async function DashboardPage({
             const checkedToday = todayCheckins[rule.id];
             const savings =
               rule.daily_spend_estimate && rule.current_streak > 0
-                ? `€${(rule.current_streak * rule.daily_spend_estimate).toFixed(0)} SAVED`
+                ? `${formatCurrency(rule.current_streak * rule.daily_spend_estimate, currency)} SAVED`
                 : null;
 
             return (

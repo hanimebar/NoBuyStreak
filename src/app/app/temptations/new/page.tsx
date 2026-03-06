@@ -6,7 +6,10 @@ import { createClient } from "@/lib/supabase/client";
 import type { Category, TriggerSource, Outcome } from "@/types";
 import { useEffect } from "react";
 
-const CATEGORIES: Category[] = ["clothing", "food", "tech", "beauty", "homewares", "other"];
+const CATEGORIES: Category[] = [
+  "clothing", "food", "drinks", "tech", "beauty", "homewares",
+  "gaming", "gambling", "alcohol", "smoking", "trading", "other",
+];
 const TRIGGERS: TriggerSource[] = ["instagram", "tiktok", "email", "in-store", "boredom", "other"];
 
 function TemptationForm() {
@@ -158,13 +161,22 @@ function TemptationForm() {
 
         {error && <p className="text-red-600 text-sm">{error}</p>}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-60 transition"
-        >
-          {loading ? "Saving…" : "Log temptation"}
-        </button>
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => window.history.back()}
+            className="flex-1 border border-gray-300 text-gray-600 rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-gray-50 transition"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={loading}
+            className="flex-1 bg-blue-600 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-60 transition"
+          >
+            {loading ? "Saving…" : "Log temptation"}
+          </button>
+        </div>
       </form>
     </div>
   );

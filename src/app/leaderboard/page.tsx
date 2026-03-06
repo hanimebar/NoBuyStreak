@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
+import Footer from "@/components/Footer";
 
 interface Entry {
   rank: number;
@@ -271,6 +272,8 @@ export default function LeaderboardPage() {
           </Link>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }

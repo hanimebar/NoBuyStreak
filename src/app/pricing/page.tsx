@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Footer from "@/components/Footer";
 
 export default function PricingPage() {
   const [loading, setLoading] = useState<"monthly" | "annual" | null>(null);
@@ -106,6 +107,8 @@ export default function PricingPage() {
           </a>
         </p>
       </div>
+
+      <Footer />
     </div>
   );
 }

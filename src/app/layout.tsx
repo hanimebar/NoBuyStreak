@@ -15,19 +15,47 @@ const ibmMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "No-BS — No Buy Streak",
+  title: {
+    default: "NoBuy Streak — Turn Spending Restraint Into a Streak",
+    template: "%s — NoBuy Streak",
+  },
   description:
-    "No-BS streak tracker for the No Buy movement. Set rules, check in daily, and share your progress.",
+    "The No Buy streak tracker for the underconsumption movement. Set No Buy rules, check in daily, track money saved, and share your progress. Join thousands keeping their streak.",
+  keywords: [
+    "no buy challenge", "no buy streak", "underconsumption", "spending tracker",
+    "no spend challenge", "habit tracker", "money saved", "no buy 2026",
+    "no buy app", "spending restraint", "frugal living", "financial wellness",
+  ],
+  authors: [{ name: "Äctvli Responsible Consulting" }],
+  creator: "Äctvli Responsible Consulting",
+  metadataBase: new URL("https://nobuystreak.com"),
+  alternates: { canonical: "/" },
   manifest: "/manifest.json",
   icons: { icon: "/favicon.svg", apple: "/logo-mark-192.png" },
   openGraph: {
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    type: "website",
+    locale: "en_US",
+    url: "https://nobuystreak.com",
+    siteName: "NoBuy Streak",
+    title: "NoBuy Streak — Turn Spending Restraint Into a Streak",
+    description: "The No Buy streak tracker for the underconsumption movement. Set rules, check in daily, track money saved.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "NoBuy Streak — No BS spending restraint tracker" }],
   },
-  twitter: { card: "summary_large_image", images: ["/og-image.png"] },
+  twitter: {
+    card: "summary_large_image",
+    title: "NoBuy Streak — Turn Spending Restraint Into a Streak",
+    description: "The No Buy streak tracker for the underconsumption movement.",
+    images: ["/og-image.png"],
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "NoBuy Streak",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
 };
 

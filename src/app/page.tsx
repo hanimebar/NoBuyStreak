@@ -1,16 +1,39 @@
 export const dynamic = "force-dynamic";
 
+import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import Leaderboard from "@/components/Leaderboard";
 import Logo from "@/components/Logo";
+import Footer from "@/components/Footer";
 import { createClient } from "@/lib/supabase/server";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "https://nobuystreak.com" },
+};
 
 export default async function LandingPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "NoBuy Streak",
+    url: "https://nobuystreak.com",
+    description: "The No Buy streak tracker for the underconsumption movement. Set No Buy rules, check in daily, track money saved, and share your progress.",
+    applicationCategory: "LifestyleApplication",
+    operatingSystem: "Web, iOS, Android",
+    offers: [
+      { "@type": "Offer", price: "0", priceCurrency: "EUR", name: "Free Plan" },
+      { "@type": "Offer", price: "6", priceCurrency: "EUR", name: "Pro Monthly", billingIncrement: "P1M" },
+    ],
+    author: { "@type": "Organization", name: "Äctvli Responsible Consulting", email: "reachout@actvli.com" },
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <Script id="json-ld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 py-4 border-b border-border">
         <Link href="/">
@@ -122,13 +145,29 @@ export default async function LandingPage() {
         </Link>
       </section>
 
-      <footer className="text-center py-8 text-xs text-muted border-t border-border">
-        <div className="flex gap-4 justify-center mb-2">
-          <Link href="/privacy" className="hover:text-foreground">PRIVACY</Link>
-          <Link href="/terms" className="hover:text-foreground">TERMS</Link>
+      {/* BillShrinkr cross-promo */}
+      <section className="border-t border-border py-12 px-6 bg-card/50">
+        <div className="max-w-2xl mx-auto text-center space-y-4">
+          <p className="font-mono text-xs text-muted tracking-widest">[ FROM THE SAME TEAM ]</p>
+          <h2 className="font-retro text-3xl text-amber">ALSO: BILLSHRINKR</h2>
+          <p className="font-mono text-sm text-foreground max-w-md mx-auto">
+            Already tracking what you&apos;re <em>not</em> buying? Now track whether what you&apos;re <em>still</em> paying for is actually worth it.
+          </p>
+          <p className="font-mono text-xs text-muted max-w-sm mx-auto">
+            Subscription ROI tracker — flags which subscriptions to keep, review, or cancel based on real cost-per-use.
+          </p>
+          <a
+            href="https://actvli.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block border border-border text-muted font-mono text-xs px-5 py-2 hover:border-amber hover:text-amber transition"
+          >
+            LEARN MORE →
+          </a>
         </div>
-        © {new Date().getFullYear()} NOBUY STREAK · reachout@actvli.com
-      </footer>
+      </section>
+
+      <Footer />
     </div>
   );
 }

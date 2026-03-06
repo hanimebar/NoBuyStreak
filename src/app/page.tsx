@@ -17,6 +17,9 @@ export default async function LandingPage() {
           <Logo variant="horizontal" size="sm" />
         </Link>
         <div className="flex items-center gap-4">
+          <Link href="/leaderboard" className="text-sm text-muted hover:text-foreground transition">
+            LEADERBOARD
+          </Link>
           <Link href="/pricing" className="text-sm text-muted hover:text-foreground transition">
             PRICING
           </Link>

@@ -20,6 +20,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           <Link href="/app/dashboard" className="hover:text-amber transition">DASHBOARD</Link>
           <Link href="/app/rules/new" className="hover:text-amber transition">+ RULE</Link>
           <Link href="/app/temptations/new" className="hover:text-amber transition">LOG</Link>
+          <Link href="/leaderboard" className="hover:text-amber transition">SCORES</Link>
           <Link href="/app/settings" className="hover:text-amber transition">SETTINGS</Link>
           <SignOutButton />
         </div>

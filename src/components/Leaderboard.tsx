@@ -9,6 +9,7 @@ interface Entry {
   category: string;
   streak: number;
   longest: number;
+  savingsDays: number | null;
 }
 
 const CATEGORY_GLYPHS: Record<string, string> = {
@@ -23,13 +24,13 @@ const CATEGORY_GLYPHS: Record<string, string> = {
 const RANK_COLORS = ["#f0c040", "#c0c0c0", "#cd7f32"];
 
 const DEMO_ENTRIES: Entry[] = [
-  { rank: 1, handle: "AAA", rule: "No new clothes", category: "clothing", streak: 365, longest: 365 },
-  { rank: 2, handle: "SAR", rule: "No takeaway coffee", category: "food", streak: 312, longest: 312 },
-  { rank: 3, handle: "CPU", rule: "No tech purchases", category: "tech", streak: 256, longest: 256 },
-  { rank: 4, handle: "MIR", rule: "No beauty hauls", category: "beauty", streak: 199, longest: 210 },
-  { rank: 5, handle: "ZAP", rule: "No fast fashion", category: "clothing", streak: 144, longest: 144 },
-  { rank: 6, handle: "ACE", rule: "No homewares", category: "homewares", streak: 88, longest: 120 },
-  { rank: 7, handle: "QQQ", rule: "No impulse buys", category: "other", streak: 42, longest: 77 },
+  { rank: 1, handle: "AAA", rule: "No new clothes", category: "clothing", streak: 365, longest: 365, savingsDays: 2190 },
+  { rank: 2, handle: "SAR", rule: "No takeaway coffee", category: "food", streak: 312, longest: 312, savingsDays: 936 },
+  { rank: 3, handle: "CPU", rule: "No tech purchases", category: "tech", streak: 256, longest: 256, savingsDays: 7680 },
+  { rank: 4, handle: "MIR", rule: "No beauty hauls", category: "beauty", streak: 199, longest: 210, savingsDays: 1194 },
+  { rank: 5, handle: "ZAP", rule: "No fast fashion", category: "clothing", streak: 144, longest: 144, savingsDays: 720 },
+  { rank: 6, handle: "ACE", rule: "No homewares", category: "homewares", streak: 88, longest: 120, savingsDays: null },
+  { rank: 7, handle: "QQQ", rule: "No impulse buys", category: "other", streak: 42, longest: 77, savingsDays: 210 },
 ];
 
 function AsciiBar({ value, max }: { value: number; max: number }) {
@@ -207,14 +208,18 @@ export default function Leaderboard() {
                       INSERT COIN TO CONTINUE
                     </p>
                     <p className="text-[10px] text-[#555544] mt-1">
-                      (just kidding — it's free){" "}
+                      (just kidding — it&apos;s free){" "}
                       <a href="/login" className="text-[#f0c040] hover:underline">START NOW</a>
                     </p>
                   </div>
                 ) : (
-                  <div className="mt-3 text-[#555544] text-xs">
-                    &gt; SHOWING TOP {entries.length} ACTIVE STREAKS
-                    {tick % 2 === 0 ? "█" : " "}
+                  <div className="mt-3 flex items-center justify-between text-xs">
+                    <span className="text-[#555544]">
+                      &gt; TOP {entries.length} SHOWN{tick % 2 === 0 ? "█" : " "}
+                    </span>
+                    <a href="/leaderboard" className="text-[#f0c040] hover:underline font-mono">
+                      VIEW FULL LEADERBOARD →
+                    </a>
                   </div>
                 )}
               </div>

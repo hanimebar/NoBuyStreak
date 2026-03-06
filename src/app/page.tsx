@@ -157,7 +157,7 @@ export default async function LandingPage() {
             Subscription ROI tracker — flags which subscriptions to keep, review, or cancel based on real cost-per-use.
           </p>
           <a
-            href="https://actvli.com"
+            href="https://billshrinkr.actvli.com"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block border border-border text-muted font-mono text-xs px-5 py-2 hover:border-amber hover:text-amber transition"

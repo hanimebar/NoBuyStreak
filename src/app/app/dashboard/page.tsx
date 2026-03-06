@@ -73,13 +73,23 @@ export default async function DashboardPage({
       </div>
 
       {(!rules || rules.length === 0) ? (
-        <div className="text-center py-16 border border-border">
-          <p className="text-muted mb-4 font-retro text-xl">&gt; NO RULES FOUND</p>
+        <div className="border border-amber bg-card p-8 text-center space-y-4">
+          <p className="font-mono text-xs text-muted tracking-widest">C:\NOBUY&gt; no_rules_found.exe</p>
+          <h2 className="font-retro text-3xl text-amber">YOUR RULEBOOK IS EMPTY</h2>
+          <p className="font-mono text-sm text-foreground max-w-sm mx-auto">
+            Pick one thing you&apos;re not buying. Give it a name. Check in every day.
+            That&apos;s the whole game.
+          </p>
+          <div className="font-mono text-xs text-muted space-y-1 text-left max-w-xs mx-auto pt-2">
+            <p>&gt; &quot;No new clothes&quot;</p>
+            <p>&gt; &quot;No takeaway coffee&quot;</p>
+            <p>&gt; &quot;No impulse Amazon orders&quot;</p>
+          </div>
           <Link
             href="/onboarding"
-            className="border border-amber text-amber px-4 py-2 text-sm hover:bg-amber hover:text-background transition"
+            className="inline-block border-2 border-amber text-amber font-retro text-xl px-6 py-2 hover:bg-amber hover:text-background transition mt-2"
           >
-            CREATE FIRST RULE
+            [SET FIRST RULE]
           </Link>
         </div>
       ) : (
@@ -104,7 +114,7 @@ export default async function DashboardPage({
                     <p className="text-xs text-muted uppercase mt-0.5">{rule.category}</p>
                   </div>
                   <div className="text-right">
-                    <div className="font-retro text-5xl text-amber leading-none">
+                    <div className="font-retro text-4xl sm:text-5xl text-amber leading-none">
                       {rule.current_streak}
                     </div>
                     <div className="text-xs text-muted mt-1">DAY STREAK</div>

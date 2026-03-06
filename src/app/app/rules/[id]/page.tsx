@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import CheckInButton from "@/components/CheckInButton";
+import StreakCalendar from "@/components/StreakCalendar";
 import type { Checkin, TemptationLog } from "@/types";
 import { formatCurrency } from "@/lib/currencies";
 
@@ -14,9 +15,7 @@ export default async function RuleDetailPage({
 }) {
   const { id } = await params;
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
   const { data: rule } = await supabase
@@ -44,7 +43,7 @@ export default async function RuleDetailPage({
     .select("*")
     .eq("rule_id", id)
     .order("checked_date", { ascending: false })
-    .limit(30);
+    .limit(70);
 
   const { data: temptations } = await supabase
     .from("temptation_logs")
@@ -64,108 +63,108 @@ export default async function RuleDetailPage({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+
+      {/* Header */}
+      <div className="flex items-start justify-between gap-4">
         <div>
-          <Link href="/app/dashboard" className="text-sm text-gray-400 hover:text-gray-600">
-            ← Dashboard
+          <Link href="/app/dashboard" className="font-mono text-xs text-muted hover:text-amber transition">
+            ← DASHBOARD
           </Link>
-          <h1 className="text-xl font-bold text-gray-900 mt-1">{rule.name}</h1>
-          <p className="text-xs text-gray-400 capitalize">{rule.category}</p>
+          <h1 className="font-retro text-3xl text-amber mt-1">{rule.name.toUpperCase()}</h1>
+          <p className="font-mono text-xs text-muted uppercase mt-0.5">{rule.category}</p>
         </div>
         {isPro && (
           <a
             href={`/api/card/${rule.id}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition"
+            className="shrink-0 border border-amber text-amber font-retro text-sm px-3 py-1.5 hover:bg-amber hover:text-background transition"
           >
-            Download card
+            DOWNLOAD CARD
           </a>
         )}
       </div>
 
       {/* Streak stats */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <div className="text-4xl font-bold text-gray-900">{rule.current_streak}</div>
-          <div className="text-xs text-gray-400 mt-1">current streak</div>
+      <div className="grid grid-cols-2 gap-3">
+        <div className="border border-border bg-card p-4 text-center">
+          <div className="font-retro text-5xl text-amber leading-none">{rule.current_streak}</div>
+          <div className="font-mono text-xs text-muted mt-2 uppercase">Current streak</div>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <div className="text-4xl font-bold text-gray-900">{rule.longest_streak}</div>
-          <div className="text-xs text-gray-400 mt-1">longest streak</div>
+        <div className="border border-border bg-card p-4 text-center">
+          <div className="font-retro text-5xl text-amber leading-none">{rule.longest_streak}</div>
+          <div className="font-mono text-xs text-muted mt-2 uppercase">All-time best</div>
         </div>
       </div>
 
       {savings && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-          <p className="text-green-700 font-semibold">{savings} estimated saved</p>
+        <div className="border border-retro-green bg-card p-4">
+          <p className="font-mono text-sm text-retro-green">&gt; {savings} NOT SPENT — ESTIMATED SAVINGS</p>
         </div>
       )}
 
       {/* Today check-in */}
-      <div className="bg-white rounded-xl border border-gray-200 p-4">
-        <p className="text-sm font-medium text-gray-700 mb-3">Today</p>
+      <div className="border border-border bg-card p-4">
+        <p className="font-mono text-xs text-muted uppercase tracking-wider mb-3">Today&apos;s check-in</p>
         <CheckInButton
           ruleId={rule.id}
           checkedToday={todayCheckin?.held ?? null}
         />
       </div>
 
-      {/* Check-in history */}
+      {/* Streak calendar heatmap */}
+      <div className="border border-border bg-card p-4">
+        <StreakCalendar checkins={checkins ?? []} timezone={timezone} />
+      </div>
+
+      {/* Temptation log */}
       <div>
-        <h2 className="text-sm font-semibold text-gray-700 mb-3">Last 30 days</h2>
-        <div className="bg-white rounded-xl border border-gray-200 divide-y divide-gray-100">
-          {(checkins ?? []).length === 0 ? (
-            <p className="text-sm text-gray-400 p-4">No check-ins yet.</p>
+        <div className="flex items-center justify-between mb-3">
+          <p className="font-mono text-xs text-muted uppercase tracking-wider">Temptation log</p>
+          <Link
+            href={`/app/temptations/new?rule_id=${rule.id}`}
+            className="font-mono text-xs text-amber hover:underline"
+          >
+            + LOG ONE
+          </Link>
+        </div>
+        <div className="border border-border bg-card divide-y divide-border">
+          {(temptations ?? []).length === 0 ? (
+            <p className="font-mono text-xs text-muted p-4">&gt; No temptations logged. Either you&apos;re crushing it or you&apos;re in denial.</p>
           ) : (
-            (checkins ?? []).map((c: Checkin) => (
-              <div key={c.id} className="flex items-center justify-between px-4 py-2.5">
-                <span className="text-sm text-gray-600">{c.checked_date}</span>
-                <span
-                  className={`text-xs font-medium ${
-                    c.held ? "text-green-600" : "text-red-500"
-                  }`}
-                >
-                  {c.held ? "Held" : "Slipped"}
-                </span>
+            (temptations ?? []).map((t: TemptationLog) => (
+              <div key={t.id} className="px-4 py-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm text-foreground">{t.item_name}</span>
+                  <span className={`font-retro text-sm ${t.outcome === "resisted" ? "text-retro-green" : "text-retro-red"}`}>
+                    [{t.outcome.toUpperCase()}]
+                  </span>
+                </div>
+                <div className="flex gap-3 mt-1 font-mono text-xs text-muted">
+                  <span className="uppercase">{t.category}</span>
+                  {t.estimated_cost && <span>{formatCurrency(t.estimated_cost, currency)}</span>}
+                  {t.trigger_source && <span className="uppercase">{t.trigger_source}</span>}
+                  <span>{new Date(t.logged_at).toLocaleDateString("en-CA", { timeZone: timezone })}</span>
+                </div>
               </div>
             ))
           )}
         </div>
       </div>
 
-      {/* Temptation log */}
+      {/* Check-in history list */}
       <div>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold text-gray-700">Temptations</h2>
-          <Link
-            href={`/app/temptations/new?rule_id=${rule.id}`}
-            className="text-xs text-blue-600 hover:underline"
-          >
-            + Log one
-          </Link>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 divide-y divide-gray-100">
-          {(temptations ?? []).length === 0 ? (
-            <p className="text-sm text-gray-400 p-4">No temptations logged.</p>
+        <p className="font-mono text-xs text-muted uppercase tracking-wider mb-3">Recent check-ins</p>
+        <div className="border border-border bg-card divide-y divide-border">
+          {(checkins ?? []).length === 0 ? (
+            <p className="font-mono text-xs text-muted p-4">&gt; No check-ins yet. Start today.</p>
           ) : (
-            (temptations ?? []).map((t: TemptationLog) => (
-              <div key={t.id} className="px-4 py-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-800">{t.item_name}</span>
-                  <span
-                    className={`text-xs font-medium ${
-                      t.outcome === "resisted" ? "text-green-600" : "text-red-500"
-                    }`}
-                  >
-                    {t.outcome}
-                  </span>
-                </div>
-                <div className="flex gap-3 mt-0.5 text-xs text-gray-400">
-                  <span className="capitalize">{t.category}</span>
-                  {t.estimated_cost && <span>{formatCurrency(t.estimated_cost, currency)}</span>}
-                  {t.trigger_source && <span>{t.trigger_source}</span>}
-                </div>
+            (checkins ?? []).slice(0, 14).map((c: Checkin) => (
+              <div key={c.id} className="flex items-center justify-between px-4 py-2.5">
+                <span className="font-mono text-sm text-foreground">{c.checked_date}</span>
+                <span className={`font-retro text-sm ${c.held ? "text-retro-green" : "text-retro-red"}`}>
+                  {c.held ? "[HELD]" : "[SLIPPED]"}
+                </span>
               </div>
             ))
           )}

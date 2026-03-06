@@ -216,6 +216,23 @@ export default function SettingsClient({ profile, provider, userId }: Props) {
     if (res.ok) { const { url } = await res.json(); window.location.href = url; }
   }
 
+  // ── Restore Pro (self-heal if webhook missed) ─────────────────────────────
+  const [restoreMsg, setRestoreMsg] = useState({ text: "", ok: false });
+  const [restoreLoading, setRestoreLoading] = useState(false);
+  async function handleRestorePro() {
+    setRestoreLoading(true);
+    setRestoreMsg({ text: "", ok: false });
+    const res = await fetch("/api/account/restore-pro", { method: "POST" });
+    const data = await res.json();
+    if (res.ok) {
+      setRestoreMsg({ text: "Pro restored! Reloading...", ok: true });
+      setTimeout(() => window.location.reload(), 1200);
+    } else {
+      setRestoreMsg({ text: data.error ?? "Could not restore Pro.", ok: false });
+    }
+    setRestoreLoading(false);
+  }
+
   // ── Sign out ──────────────────────────────────────────────────────────────
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -411,6 +428,22 @@ export default function SettingsClient({ profile, provider, userId }: Props) {
             To cancel, pause, or change your plan — use the billing portal above.
             Cancellations take effect at the end of the billing period.
           </p>
+        )}
+
+        {!profile?.is_pro && (
+          <div className="border-t border-border pt-4">
+            <p className="font-mono text-xs text-muted mb-2">
+              Already paid? If Pro didn&apos;t activate, use this to restore it:
+            </p>
+            <button
+              onClick={handleRestorePro}
+              disabled={restoreLoading}
+              className="font-mono text-xs border border-border text-muted px-4 py-1.5 hover:border-retro-green hover:text-retro-green disabled:opacity-40 transition"
+            >
+              {restoreLoading ? "CHECKING..." : "RESTORE PRO"}
+            </button>
+            <StatusMsg msg={restoreMsg.text} ok={restoreMsg.ok} />
+          </div>
         )}
       </Section>
 

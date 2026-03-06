@@ -61,7 +61,14 @@ export default async function DashboardPage({
       )}
 
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-retro text-3xl text-amber">YOUR RULES</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="font-retro text-3xl text-amber">YOUR RULES</h1>
+          {isPro && (
+            <span className="font-retro text-sm border border-amber text-amber px-2 py-0.5 bg-amber/10">
+              PRO
+            </span>
+          )}
+        </div>
         {!isPro && (
           <Link
             href="/pricing"

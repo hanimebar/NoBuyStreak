@@ -9,6 +9,14 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("is_pro")
+    .eq("id", user.id)
+    .single();
+
+  const isPro = profile?.is_pro ?? false;
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Top nav — desktop */}
@@ -17,6 +25,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           <Logo variant="horizontal" size="xs" />
         </Link>
         <div className="hidden sm:flex items-center gap-4 text-xs text-muted">
+          {isPro && (
+            <span className="font-retro text-sm border border-amber text-amber px-2 py-0.5 bg-amber/10 cursor-default">
+              PRO
+            </span>
+          )}
           <Link href="/app/dashboard" className="hover:text-amber transition">DASHBOARD</Link>
           <Link href="/app/rules/new" className="hover:text-amber transition">+ RULE</Link>
           <Link href="/app/temptations/new" className="hover:text-amber transition">LOG</Link>

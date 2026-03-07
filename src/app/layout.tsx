@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { VT323, IBM_Plex_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const vt323 = VT323({
@@ -73,7 +74,10 @@ export default function RootLayout({
         <meta name="theme-color" content="#0a0a0a" />
         <link rel="apple-touch-icon" href="/logo-mark-192.png" />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

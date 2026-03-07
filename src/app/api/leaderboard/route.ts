@@ -58,8 +58,8 @@ export async function GET(request: Request) {
   });
 
   const cacheHeader = all
-    ? "public, s-maxage=60, stale-while-revalidate=120"
-    : "public, s-maxage=300, stale-while-revalidate=600";
+    ? "public, s-maxage=30, stale-while-revalidate=60"
+    : "public, s-maxage=30, stale-while-revalidate=60";
 
   return NextResponse.json({ entries }, {
     headers: { "Cache-Control": cacheHeader },

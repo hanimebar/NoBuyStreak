@@ -58,17 +58,25 @@ export default function CheckInButton({ ruleId, checkedToday }: Props) {
       {toast && <Toast msg={toast.msg} ok={toast.ok} />}
 
       {localState === true ? (
-        <div className="flex items-center gap-3">
-          <span className="font-retro text-lg text-retro-green">
-            {streak !== null ? `[DAY ${streak} — HELD ✓]` : "[HELD ✓]"}
-          </span>
-          <button
-            onClick={() => checkIn(false)}
-            disabled={loading}
-            className="text-xs text-muted hover:text-retro-red underline"
-          >
-            I actually slipped
-          </button>
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-3">
+            <span className="font-retro text-lg text-retro-green">
+              {streak !== null ? `[DAY ${streak} — HELD ✓]` : "[HELD ✓]"}
+            </span>
+            <button
+              onClick={() => checkIn(false)}
+              disabled={loading}
+              className="text-xs text-muted hover:text-retro-red underline"
+            >
+              I actually slipped
+            </button>
+          </div>
+          {streak !== null && (
+            <p className="font-mono text-[11px] text-muted">
+              &gt; LEADERBOARD SYNCING — GIVE IT ~30s TO CATCH UP.{" "}
+              <span className="opacity-60">IT KNOWS. IT&apos;S JUST DRAMATIC.</span>
+            </p>
+          )}
         </div>
       ) : localState === false ? (
         <div className="flex items-center gap-3">

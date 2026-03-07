@@ -56,6 +56,9 @@ create table webhook_events (
   processed_at timestamptz not null default now()
 );
 
+-- webhook_events: enable RLS (no policies needed — service role only)
+alter table webhook_events enable row level security;
+
 -- indexes
 create index on checkins(rule_id, checked_date);
 create index on temptation_logs(user_id, logged_at);
